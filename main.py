@@ -2,6 +2,12 @@ import cv2
 import numpy as np
 import dlib  # Documentation: http://dlib.net/
 from math import hypot
+import tkinter
+
+root = tkinter.Tk()
+monitor_width = root.winfo_screenwidth()
+monitor_height = root.winfo_screenheight()
+print('SCREEN RESOLUTION',monitor_height,monitor_width)
 
 cap = cv2.VideoCapture(0)
 # Uses dlib get frontal face detector algorithym
