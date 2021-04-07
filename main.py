@@ -7,7 +7,7 @@ import tkinter
 root = tkinter.Tk()
 monitor_width = root.winfo_screenwidth()
 monitor_height = root.winfo_screenheight()
-print('SCREEN RESOLUTION',monitor_height,monitor_width)
+print('SCREEN RESOLUTION', monitor_height, monitor_width)
 
 cap = cv2.VideoCapture(0)
 # Uses dlib get frontal face detector algorithym
@@ -58,7 +58,7 @@ def get_blinking_ratio(top_point_middle, bottom_point_middle, left_point, right_
 def is_bliking(ratio):
     # usually blinking happends when ratio is more than 6, but it can depend on the eye
     if ratio > 6:
-        cv2.putText(frame, "BLINKING", (200, 100), font, 1, (255, 0, 0),2)
+        cv2.putText(frame, "BLINKING", (200, 100), font, 1, (255, 0, 0), 2)
         return True
     return False
 
@@ -159,7 +159,7 @@ while True:
         gaze_ratio = (left_eye_gaze_ratio + right_eye_gaze_ratio)/2
         direction = predict_gaze_direction(gaze_ratio)
 
-        ## create frame with colors just to help recognize if we got the correct color
+        # create frame with colors just to help recognize if we got the correct color
         new_frame = np.zeros((500, 500, 3), np.uint8)
         if direction == 'LEFT':
             new_frame[:] = (255, 0, 0)
@@ -167,7 +167,7 @@ while True:
             new_frame[:] = (0, 0, 255)
         else:
             new_frame[:] = (0, 255, 0)
-        cv2.imshow('Color vs Direction',new_frame)
+        cv2.imshow('Color vs Direction', new_frame)
 
         # display gaze ratio + predicted direction
         cv2.putText(frame, str(direction),
@@ -176,7 +176,7 @@ while True:
                     (50, 150), font, 1, (0, 0, 255), 2)
 
     cv2.imshow("Frame", frame)
-    key = cv2.waitKey(100)
+    key = cv2.waitKey(1)
     # key 27 is ESC
     if key == 27:
         break
