@@ -109,6 +109,8 @@ def get_gaze_ratio(landmarks, eye_points, frame, gray):
     # threshold_eye = cv2.resize(threshold_eye, None, fx=5, fy=5)
     cv2.imshow("Threshold", threshold_eye)
 
+    cv2.imshow('Mask', eye_frame)
+
     try:
         gaze_ratio = left_side_white/right_side_white
     except ZeroDivisionError:
