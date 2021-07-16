@@ -2,14 +2,9 @@ import cv2
 import numpy as np
 import dlib  # Documentation: http://dlib.net/
 from math import hypot
-import tkinter
 
-root = tkinter.Tk()
-monitor_width = root.winfo_screenwidth()
-monitor_height = root.winfo_screenheight()
-print('SCREEN RESOLUTION', monitor_height, monitor_width)
-
-cap = cv2.VideoCapture(0)
+# GETS VIDEO CAPTURE FROM WEBCAM
+cap = cv2.VideoCapture('./video.mp4')
 # Uses dlib get frontal face detector algorithym
 detector = dlib.get_frontal_face_detector()
 # Gets the shape predictor model
@@ -29,18 +24,19 @@ def draw_lines(landmarks, eye_points):
     right_point = (landmarks.part(
         eye_points[1]).x, landmarks.part(eye_points[1]).y)
 
-    # draws horizontal line
-    # horizontal_line = cv2.line(
-    #     frame, left_point, right_point, (0, 0, 255), 2)
-
     top_point_middle = midpoint(landmarks.part(
         eye_points[2]), landmarks.part(eye_points[3]))
     bottom_point_middle = midpoint(landmarks.part(
         eye_points[4]), landmarks.part(eye_points[5]))
 
     # draws vertical line
-    # vertical_line = cv2.line(
-    #     frame, top_point_middle, bottom_point_middle, (0, 255, 0), 2)
+    vertical_line = cv2.line(
+        frame, top_point_middle, bottom_point_middle, (0, 255, 0), 2)
+    
+    # draws horizontal line
+    horizontal_line = cv2.line(
+        frame, left_point, right_point, (0, 0, 255), 2)
+    
 
     return left_point, right_point, top_point_middle, bottom_point_middle
 
@@ -89,6 +85,11 @@ def get_gaze_ratio(landmarks, eye_points, frame, gray):
     min_y = np.min(eye_region[:, 1])
     max_y = np.max(eye_region[:, 1])
 
+    # eye
+    eye = frame[min_y: max_y, min_x: max_x]
+    # eye = cv2.resize(eye, None, fx=5, fy=5)
+    cv2.imshow("Eye", eye)
+
     # extract the points exactly where the minimun and maximum regions
     gray_eye = eye_frame[min_y: max_y, min_x: max_x]
 
@@ -103,6 +104,10 @@ def get_gaze_ratio(landmarks, eye_points, frame, gray):
 
     right_side_threshold = threshold_eye[0:heigth, int(width/2): width]
     right_side_white = cv2.countNonZero(right_side_threshold)
+
+    # Eye with threshold
+    # threshold_eye = cv2.resize(threshold_eye, None, fx=5, fy=5)
+    cv2.imshow("Threshold", threshold_eye)
 
     try:
         gaze_ratio = left_side_white/right_side_white
@@ -167,7 +172,7 @@ while True:
             new_frame[:] = (0, 0, 255)
         else:
             new_frame[:] = (0, 255, 0)
-        cv2.imshow('Color vs Direction', new_frame)
+        # cv2.imshow('Color vs Direction', new_frame)
 
         # display gaze ratio + predicted direction
         cv2.putText(frame, str(direction),
