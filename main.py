@@ -4,7 +4,7 @@ import dlib  # Documentation: http://dlib.net/
 from math import hypot
 
 # GETS VIDEO CAPTURE FROM WEBCAM
-cap = cv2.VideoCapture('./video.mp4')
+cap = cv2.VideoCapture(0)
 # Uses dlib get frontal face detector algorithym
 detector = dlib.get_frontal_face_detector()
 # Gets the shape predictor model
